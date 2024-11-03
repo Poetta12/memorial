@@ -1,21 +1,19 @@
 <template>
   <div class="wrapper">
     <div class="content">
-      <section class="section hero"></section>
-      <section class="section gradient-purple"></section>
-      <section class="section gradient-blue"></section>
+      <HeroSectionComp />
+      <GradientSectionsComp />
     </div>
-    <div class="image-container">
-      <img src="/img/bye.webp" alt="Au revoir" class="bye" />
-      <div class="light-overlay"></div> <!-- Couche de lumière -->
-      <img src="/img/fenetre.png" alt="fenetre" class="fenetre" />
-    </div>
+    <ImageContainerComp />
     <AudioPlayerComp src="/musiques/Sarah_McLachlan-In_the_arms_of_an_angel.mp3" ref="audioPlayer" /> <!-- Utilisation du composant AudioPlayerComp -->
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import HeroSectionComp from '@/components/HeroSectionComp.vue';
+import GradientSectionsComp from '@/components/GradientSectionsComp.vue';
+import ImageContainerComp from '@/components/ImageContainerComp.vue';
 import AudioPlayerComp from '@/components/AudioPlayerComp.vue'; // Import du composant
 import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -68,75 +66,16 @@ onMounted(() => {
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  overflow: hidden; /* Désactive le défilement de la page */
-}
-
-.wrapper,
-.content {
+.wrapper {
   position: relative;
-  width: 100%;
-  height: 100vh; /* S'assure que le wrapper remplit toute la hauteur de l'écran */
-  z-index: 1;
-}
-
-.content {
-  overflow-x: hidden;
-}
-
-.content .section {
   width: 100%;
   height: 100vh;
 }
-
-.content .section.hero {
-  background-image: url("/img/bye.webp");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.image-container {
-  position: absolute;
-  top: 0;
-  left: 0;
+.content {
+  overflow-x: hidden; /* Empêche le débordement horizontal */
+  overflow-y: auto; /* Permet le défilement vertical si nécessaire */
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 2;
+  height: 100vh; /* Remplit toute la hauteur de l'écran */
 }
 
-.image-container img {
-  position: absolute; /* Positionne les images les unes sur les autres */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Couvre le conteneur sans déformation */
-}
-
-.bye {
-  z-index: 1; /* Image de l'image en dessous */
-}
-
-.fenetre {
-  z-index: 2; /* Image de la fenêtre au-dessus */
-}
-
-.light-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.8); /* Couleur de lumière pleine */
-  z-index: 1; /* Entre l'image de la fenêtre et le paysage */
-  transition: opacity 0.1s ease; /* Transition pour l'effet de dissipation */
-}
 </style>
