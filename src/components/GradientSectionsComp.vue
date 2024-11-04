@@ -8,7 +8,7 @@
 <style scoped>
 .section {
   width: 100%;
-  height: 100vh; /* Assurez-vous que chaque section remplit toute la hauteur de l'écran */
+  height: 25vh; /* Assurez-vous que chaque section remplit toute la hauteur de l'écran */
 }
 
 .gradient-purple {

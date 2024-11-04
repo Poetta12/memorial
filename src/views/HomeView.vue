@@ -1,81 +1,92 @@
 <template>
-  <div class="wrapper">
-    <div class="content">
-      <HeroSectionComp />
-      <GradientSectionsComp />
-    </div>
-    <ImageContainerComp />
-    <AudioPlayerComp src="/musiques/Sarah_McLachlan-In_the_arms_of_an_angel.mp3" ref="audioPlayer" /> <!-- Utilisation du composant AudioPlayerComp -->
+  <div class="home-view" :class="{ 'fade-in': isVisible }">
+    <header class="header">
+      <h1>Bienvenue dans le Mémorial</h1>
+      <RadialMenuComp /> <!-- Menu radial en haut à droite -->
+    </header>
+    <main class="main-content">
+      <!-- Section À Propos -->
+      <section class="about-section">
+        <h2>À Propos</h2>
+        <p>Ce site est dédié pour honorer et préserver la mémoire...</p>
+      </section>
+
+      <!-- Section Galerie -->
+      <section class="gallery-section">
+        <h2>Galerie de Souvenirs</h2>
+        <!-- Placeholder pour les images ou souvenirs -->
+        <div class="gallery">
+          <!-- Ajoutez ici des images pour la galerie -->
+        </div>
+      </section>
+    </main>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import HeroSectionComp from '@/components/HeroSectionComp.vue';
-import GradientSectionsComp from '@/components/GradientSectionsComp.vue';
-import ImageContainerComp from '@/components/ImageContainerComp.vue';
-import AudioPlayerComp from '@/components/AudioPlayerComp.vue'; // Import du composant
-import { gsap } from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
+import RadialMenuComp from '@/components/RadialMenuComp.vue';
 
-gsap.registerPlugin(ScrollTrigger);
-
-const audioPlayer = ref(null); // Référence pour le composant AudioPlayerComp
-const audioHasPlayed = ref(false); // État pour vérifier si l'audio a déjà été joué
+const isVisible = ref(false);
 
 onMounted(() => {
-  // Écouteur d'événements pour le défilement
-  const handleScroll = () => {
-    if (!audioHasPlayed.value) { // Vérifie si l'audio n'a pas déjà été joué
-      const audio = audioPlayer.value.$refs.audio; // Accède à l'élément audio dans le composant
-      if (audio) {
-        audio.play().then(() => {
-          audioHasPlayed.value = true; // Indique que l'audio a été joué
-        }).catch((error) => {
-          console.error("Error playing audio:", error); // Log de l'erreur s'il y a un problème
-        });
-      }
-    }
-    window.removeEventListener('scroll', handleScroll); // Supprime l'écouteur après le premier scroll
-  };
-
-  window.addEventListener('scroll', handleScroll); // Ajoute l'écouteur d'événements pour le scroll
-
-  gsap
-    .timeline({
-      scrollTrigger: {
-        trigger: ".image-container",
-        start: "top top",
-        end: "+=150%",
-        pin: true,
-        scrub: true,
-        markers: false // Désactive les marqueurs
-      }
-    })
-    .to(".light-overlay", {
-      opacity: 0, // Dissipe la couche de lumière
-      duration: 0.5, // Durée de l'animation
-      ease: "power1.inOut"
-    }, 0) // Commence à dissiper immédiatement
-    .to(".fenetre", {
-      scale: 20, // Zoom sur l'image de la fenêtre
-      transformOrigin: "center center",
-      ease: "power1.inOut"
-    }, "<"); // Synchronise avec le zoom
+  setTimeout(() => {
+    isVisible.value = true; // Déclenche le fade-in après le montage
+  }, 100); // Délai court pour initier la transition
 });
 </script>
 
 <style scoped>
-.wrapper {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-}
-.content {
-  overflow-x: hidden; /* Empêche le débordement horizontal */
-  overflow-y: auto; /* Permet le défilement vertical si nécessaire */
-  width: 100%;
-  height: 100vh; /* Remplit toute la hauteur de l'écran */
+.home-view {
+  opacity: 0; /* Initialement invisible pour le fade-in */
+  background-image: url('/img/img4.webp'); /* Image de fond */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding: 20px;
+  color: #ffffff;
+  transition: opacity 1.5s ease-in-out; /* Durée du fade-in */
 }
 
+.fade-in {
+  opacity: 1; /* Visible une fois le fade-in terminé */
+}
+
+.header {
+  position: relative;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Positionne le menu radial en haut à droite */
+.header > :first-child {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 20px;
+}
+
+.header > :last-child{
+  margin-top: 80px;
+}
+
+
+
+.main-content {
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour le texte */
+  border-radius: 10px;
+}
+
+.about-section, .gallery-section {
+  margin-bottom: 40px;
+}
+
+.gallery {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  margin-top: 20px;
+}
 </style>
